@@ -13,10 +13,10 @@
 int main() {
 //[initialize]
 	// set path and read file
-	string swmm_inp = "F:\\SWMM_LISFLOOD0622\\Project1\\guihua.inp";
-	string swmm_out = "F:\\SWMM_LISFLOOD0622\\Project1\\guihua.rpt";
-	string swmm_rpt = "F:\\SWMM_LISFLOOD0622\\Project1\\guihua.out";
-	string lisflood_conf = "F:\\SWMM_LISFLOOD0622\\Project1\\jiangbei.par";
+	string swmm_inp = "F:\\SWMM_LISFLOOD0622\\Project1\\test.inp";
+	string swmm_out = "F:\\SWMM_LISFLOOD0622\\Project1\\test.rpt";
+	string swmm_rpt = "F:\\SWMM_LISFLOOD0622\\Project1\\test.out";
+	string lisflood_conf = "F:\\SWMM_LISFLOOD0622\\Project1\\dem.par";
 	vector<string> argv_lisflood;
 	argv_lisflood.push_back(lisflood_conf);
 	vector<string> argv_swmm;
@@ -44,7 +44,7 @@ int main() {
 
 	//read swmm pipe node
 	int p_number = Tools::readCommonPoint(
-		"F:\\SWMM_LISFLOOD0622\\Project1\\guihua.inp",
+		"F:\\SWMM_LISFLOOD0622\\Project1\\test.inp",
 		PS_name); 
 
 	//read lisflood pipe node

@@ -70,6 +70,7 @@ void ReadParamFile(const char *fname, Fnames *Fnameptr, States *Statesptr, Pars 
     if(!strcmp(buffer,"initial_tstep")) fscanf(par_fp,"%lf",&Solverptr->InitTstep);
     if(!strcmp(buffer,"massint")) fscanf(par_fp,"%lf",&Parptr->MassInt);
     if(!strcmp(buffer,"saveint")) fscanf(par_fp,"%lf",&Parptr->SaveInt);
+    if (!strcmp(buffer, "ARF")) fscanf(par_fp, "%lf", &Solverptr->ARF);
     if(!strcmp(buffer,"htol")) fscanf(par_fp,"%lf",&Solverptr->htol);
     if(!strcmp(buffer,"qlimfact"))
     {
@@ -104,7 +105,11 @@ void ReadParamFile(const char *fname, Fnames *Fnameptr, States *Statesptr, Pars 
     if(!strcmp(buffer,"bcifile")) fscanf(par_fp,"%s",Fnameptr->bcifilename);
     if(!strcmp(buffer,"bdyfile")) fscanf(par_fp,"%s",Fnameptr->bdyfilename);
     if(!strcmp(buffer,"weirfile")) fscanf(par_fp,"%s",Fnameptr->weirfilename);
-
+    if (!strcmp(buffer, "ARFILE")) { 
+      Statesptr->ARFmode = ON;
+      fscanf(par_fp, "%s", Fnameptr->ARFname);
+    }
+    if (!strcmp(buffer, "DSMfile")) { fscanf(par_fp, "%s", Fnameptr->DSMname); }
 	if(!strcmp(buffer,"ch_dynamic")) Solverptr->dynsw=1; // Full dynamic steady state channel solver used for initial condition
 
     if(!strcmp(buffer,"porfile"))

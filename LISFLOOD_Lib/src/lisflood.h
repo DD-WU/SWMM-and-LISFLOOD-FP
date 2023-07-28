@@ -68,6 +68,8 @@ BoundCs - Boundary conditions
 struct Arrays{
   /*! DEM, Water height, Flow in x-direction and Flow in y-direction */
   double *DEM; // Digital elevation model
+  double* DSM; // 当ARF模式时，我们用到dsm和dem两个东西
+  double* ARF ;// Digital elevation model
   double *H,*Qx,*Qy,*Qxold,*Qyold,*U,*V,*Hflowx,*Hflowy;
   /* TRENT additions  */
   double *HU,*HV,*RSHU,*LSHU,*RSHV,*LSHV,*BSHU,*TSHU,*BSHV,*TSHV,*FHx,*FHUx,*FHVx,*FHy,*FHUy,*FHVy;
@@ -116,6 +118,8 @@ struct Fnames{
   char SGCnfilename[80];
   char porfilename[80];
   char rivername[80];
+  char ARFname[80];
+  char DSMname[80];
   char bcifilename[80];
   char bdyfilename[80];
   char weirfilename[80];
@@ -246,6 +250,7 @@ struct States{
   int SGCA_mode; // JCN switches model to use parameter p as bank full Area
   int dist_routing; // JCN turnes on spatially distributed routing velocity
   int SGCvoutput; // JCN Turns on sub-grid channel velocity output
+  int ARFmode;
 } ;
 
 //-------------------------------------------
@@ -289,6 +294,7 @@ struct Pars{
 
 // Solver settings
 struct Solver{
+  double ARF;
   double t;
   double g;
   double divg;
@@ -373,6 +379,8 @@ for easier editing.
 // Input prototypes - input.cpp
 void ReadParamFile(const char *, Fnames *, States *, Pars *, Solver*, int*);
 void LoadDEM(Fnames *,States *,Pars *,Arrays *,int*);
+void LoadDSM(Fnames*, States*, Pars*, Arrays*, int*);
+void LoadARF(Fnames*, States*, Pars*, Arrays*, int*);
 void LoadManningsn(Fnames *,Pars *,Arrays *,int*);
 void LoadSGCManningsn(Fnames *,Pars *,Arrays *,int*);
 void LoadRiverNetwork(Fnames *,States *, Pars *, vector<ChannelSegmentType> *, Arrays *,vector<QID7_Store> *,vector<int> *, int*); // CCS
@@ -398,6 +406,8 @@ void UpdateH(States *, Pars *, Solver *,BoundCs *,ChannelSegmentType *,Arrays *)
 
 // Floodplain prototypes - fp_flow.cpp
 void FloodplainQ(States *,Pars *,Solver *,Arrays *,SGCprams *);
+double CalcARFQx(int i, int j, States*, Pars*, Solver*, Arrays*, double* TSptr);
+double CalcARFQy(int i, int j, States*, Pars*, Solver*, Arrays*, double* TSptr);
 double CalcFPQx(int i,int j,States *,Pars *, Solver *, Arrays *, double * TSptr);
 double CalcFPQy(int i,int j,States *,Pars *, Solver *, Arrays *, double * TSptr);
 int MaskTest(int m1,int m2);

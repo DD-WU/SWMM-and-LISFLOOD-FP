@@ -121,6 +121,7 @@ extern "C" int init(int argc, const char *argv[]) {
   Arrptr->SGCManningsn=NULL;
 
   // Define initial values for solver settings
+  Solverptr->ARF = 0.2;
   Solverptr->Sim_Time=3600.0;
   Solverptr->InitTstep=10.0;		// Maximum timestep
   Solverptr->Nit=360;
@@ -211,6 +212,7 @@ extern "C" int init(int argc, const char *argv[]) {
   Statesptr->latlong=OFF;
   Statesptr->dist_routing=OFF;
   Statesptr->SGCvoutput=OFF; // switch for sub-grid channel velocity output
+  Statesptr->ARFmode = OFF;
 
   SGCptr->NSGCprams=0;
   SGCptr->SGCbetahmin=0.2;
@@ -379,7 +381,11 @@ extern "C" int init(int argc, const char *argv[]) {
   }
 
   LoadDEM(Fnameptr,Statesptr,Parptr,Arrptr,verbose);
-
+  if (Statesptr->ARFmode)
+  {
+    LoadARF(Fnameptr, Statesptr, Parptr, Arrptr, verbose);
+    LoadDSM(Fnameptr, Statesptr, Parptr, Arrptr, verbose);
+  }
   CalcArrayDims(Statesptr,Parptr,Arrptr); // CCS populates dx, dy and dA arrays (calcs correct dimensions if using lat long grid)
 
   // dhlin value calculated "on the fly" as a function of dx and gradient (0.0002) from Cunge et al. 1980

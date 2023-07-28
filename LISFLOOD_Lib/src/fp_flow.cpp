@@ -48,6 +48,7 @@ void FloodplainQ(States *Statesptr,Pars *Parptr,Solver *Solverptr, Arrays *Arrpt
         else if(Statesptr->porosity==ON) *qptr=CalcFPQxPor(i,j,Statesptr, Parptr, Solverptr, Arrptr); // timestep update needed here TSptr
 		else if(Statesptr->acceleration==ON) *qptr=CalcFPQxAcc(i,j,Statesptr, Parptr, Solverptr, Arrptr);
         else if(Statesptr->Roe==ON) *qptr=CalcFPQxRoe(i,j,Statesptr, Parptr, Solverptr, Arrptr);
+        else if (Statesptr->ARFmode == ON) *qptr = CalcARFQx(i, j, Statesptr, Parptr, Solverptr, Arrptr, TSptr);
 		else if(Statesptr->adaptive_ts==ON || Statesptr->qlim==ON) *qptr=CalcFPQx(i,j,Statesptr, Parptr, Solverptr, Arrptr, TSptr);
       }
       qptr++;
@@ -90,6 +91,7 @@ void FloodplainQ(States *Statesptr,Pars *Parptr,Solver *Solverptr, Arrays *Arrpt
         else if(Statesptr->porosity==ON) *qptr=CalcFPQyPor(i,j,Statesptr, Parptr, Solverptr, Arrptr); // timestep update needed here TSptr
 		else if(Statesptr->acceleration==ON) *qptr=CalcFPQyAcc(i,j,Statesptr, Parptr, Solverptr, Arrptr);
         else if(Statesptr->Roe==ON) *qptr=CalcFPQyRoe(i,j,Statesptr, Parptr, Solverptr, Arrptr);
+        else if (Statesptr->ARFmode == ON) *qptr = CalcARFQy(i, j, Statesptr, Parptr, Solverptr, Arrptr, TSptr);
 		else if(Statesptr->adaptive_ts==ON || Statesptr->qlim==ON) *qptr=CalcFPQy(i,j,Statesptr, Parptr, Solverptr, Arrptr, TSptr);
       }
       hptr0++;
@@ -111,6 +113,261 @@ void FloodplainQ(States *Statesptr,Pars *Parptr,Solver *Solverptr, Arrays *Arrpt
   }
   return;
 }
+//-----------------------------------------------------------------------------------
+// CALCULATE FLOODPLAIN (ie NON WIER) FLOW BETWEEN A POINT AND ITS W NEIGHBOUR
+double CalcARFQx(int i, int j, States* Statesptr, Pars* Parptr, Solver* Solverptr, Arrays* Arrptr, double* TSptr) {
+  double z0, z1, h0, h1, Sf, hflow, fn, dh, Qlim, Q, alpha;
+  int p0, p1, pTQ;
+
+  p0 = i + j * Parptr->xsz;
+  p1 = i + 1 + j * Parptr->xsz;
+  pTQ = i + j * (Parptr->xsz + 1) + 1;
+
+  if (Arrptr->ARF[p0] <= Solverptr->ARF) {
+    z0 = Arrptr->DEM[p0];
+  }
+  else
+  {
+    z0 = Arrptr->DSM[p0];
+  }
+  if (Arrptr->ARF[p1] <= Solverptr->ARF) {
+    z1 = Arrptr->DEM[p1];
+  }
+  else
+  {
+    z1 = Arrptr->DSM[p1];
+  }
+  h0 = Arrptr->H[p0];
+  h1 = Arrptr->H[p1];
+
+  if (Arrptr->Manningsn != NULL) fn = 0.5 * (Arrptr->Manningsn[p0] + Arrptr->Manningsn[p1]);
+  else fn = Parptr->FPn;
+
+  if (z0 + h0 > z1 + h1 && h0 > Solverptr->DepthThresh) // Flow from 0->1
+  {
+    dh = z0 + h0 - z1 - h1;
+    Sf = sqrt(dh / Parptr->dx);
+    hflow = getmax(z0 + h0, z1 + h1) - getmax(z0, z1);
+    hflow = getmax(hflow, 0);
+    hflow = getmin(hflow, Solverptr->MaxHflow);
+    // added to record Hflow
+    //Arrptr->Hflowx[pTQ] = hflow;
+
+    if (MaskTest(Arrptr->ChanMask[p0], Arrptr->ChanMask[p1]) && hflow > Solverptr->DepthThresh) {
+      if (dh < Solverptr->dhlin)
+      {
+        Sf = sqrt(Parptr->dx / Solverptr->dhlin) * (dh / Parptr->dx);
+        alpha = (pow(hflow, (5.0 / 3.0)) * Parptr->dx_sqrt) / (fn * sqrt(Solverptr->dhlin));
+      }
+      else alpha = pow(hflow, (5.0 / 3.0)) / (2. * fn * Sf);
+
+      Q = (pow(hflow, (5.0 / 3.0)) * Sf * Parptr->dy / fn);
+      if (Statesptr->adaptive_ts == ON)
+      {
+        *TSptr = getmin(*TSptr, (0.25 * Parptr->dy * Parptr->dy / alpha));
+        // MT: added to record Tstep
+        Arrptr->TRecx[pTQ] = *TSptr;
+      }
+      else
+      {
+        // flow limiter
+        Qlim = Solverptr->Qlimfact * Parptr->dA * fabs(dh) / (8 * Solverptr->Tstep);
+        if (fabs(Q) > Qlim)
+        {
+          if (Q > 0) Q = Qlim;
+          if (Q < 0) Q = -Qlim;
+          // MT added to record Qlim
+          Arrptr->LimQx[pTQ] = Q;
+        }
+      }
+    }
+    else Q = 0.0;
+  }
+  else if (z0 + h0<z1 + h1 && h1>Solverptr->DepthThresh)  // Flow from 1->0
+  {
+    dh = z1 + h1 - z0 - h0;
+    Sf = sqrt(dh / Parptr->dx);
+    hflow = getmax(z0 + h0, z1 + h1) - getmax(z0, z1);
+    hflow = getmax(hflow, 0);
+    hflow = getmin(hflow, Solverptr->MaxHflow);
+    // added to record Hflow
+    //Arrptr->Hflowx[pTQ] = hflow;
+
+    if (MaskTest(Arrptr->ChanMask[p0], Arrptr->ChanMask[p1]) && hflow > Solverptr->DepthThresh)
+    {
+      if (dh < Solverptr->dhlin)
+      {
+        Sf = sqrt(Parptr->dx / Solverptr->dhlin) * (dh / Parptr->dx);
+        alpha = (pow(hflow, (5.0 / 3.0)) * Parptr->dx_sqrt) / (fn * sqrt(Solverptr->dhlin));
+      }
+      else alpha = pow(hflow, (5.0 / 3.0)) / (2. * fn * Sf);
+
+      Q = (-pow(hflow, (5.0 / 3.0)) * Sf * Parptr->dy / fn);
+      if (Statesptr->adaptive_ts == ON)
+      {
+        *TSptr = getmin(*TSptr, (0.25 * Parptr->dy * Parptr->dy / alpha));
+        // MT: added to record Tstep
+        Arrptr->TRecx[pTQ] = *TSptr;
+      }
+      else
+      {
+        // flow limiter
+        Qlim = Solverptr->Qlimfact * Parptr->dA * fabs(dh) / (8 * Solverptr->Tstep);
+        if (fabs(Q) > Qlim)
+        {
+          if (Q > 0) Q = Qlim;
+          if (Q < 0) Q = -Qlim;
+          // MT added to record Qlim
+          Arrptr->LimQx[pTQ] = Q;
+        }
+      }
+    }
+    else Q = 0.0;
+
+  }
+  else Q = 0.0;
+  // option to save V's
+  if (Statesptr->voutput == ON)
+  {
+    if (Q != 0)
+    {
+      Arrptr->Vx[pTQ] = Q / Parptr->dx / hflow;
+      Arrptr->maxVx[pTQ] = getmax(Arrptr->maxVx[pTQ], fabs(Arrptr->Vx[pTQ]));
+    }
+    else Arrptr->Vx[pTQ] = 0.0;
+  }
+  return(Q);
+}
+//-----------------------------------------------------------------------------------
+// CALCULATE FLOODPLAIN (ie NON WIER) FLOW BETWEEN A POINT AND ITS S NEIGHBOUR
+double CalcARFQy(int i, int j, States* Statesptr, Pars* Parptr, Solver* Solverptr, Arrays* Arrptr, double* TSptr)
+{
+  double z0, z1, h0, h1, Sf, hflow, fn, dh, Qlim, Q, alpha;
+  int p0, p1, pTQ;
+
+  p0 = i + j * Parptr->xsz;
+  p1 = i + (j + 1) * Parptr->xsz;
+  pTQ = i + (j + 1) * (Parptr->xsz + 1);
+
+  if (Arrptr->ARF[p0] <= Solverptr->ARF) {
+    z0 = Arrptr->DEM[p0];
+  }
+  else
+  {
+    z0 = Arrptr->DSM[p0];
+  }
+  if (Arrptr->ARF[p1] <= Solverptr->ARF) {
+    z1 = Arrptr->DEM[p1];
+  }
+  else
+  {
+    z1 = Arrptr->DSM[p1];
+  }
+
+  h0 = Arrptr->H[p0];
+  h1 = Arrptr->H[p1];
+
+  if (Arrptr->Manningsn != NULL) fn = 0.5 * (Arrptr->Manningsn[p0] + Arrptr->Manningsn[p1]);
+  else fn = Parptr->FPn;
+
+
+  if (z0 + h0 > z1 + h1 && h0 > Solverptr->DepthThresh)
+  {
+    dh = z0 + h0 - z1 - h1;
+    Sf = sqrt(dh / Parptr->dx);
+    hflow = getmax(z0 + h0, z1 + h1) - getmax(z0, z1);
+    hflow = getmax(hflow, 0);
+    hflow = getmin(hflow, Solverptr->MaxHflow);
+    // added to record Hflow
+    //Arrptr->Hflowy[pTQ] = hflow;
+
+    if (MaskTest(Arrptr->ChanMask[p0], Arrptr->ChanMask[p1]) && hflow > Solverptr->DepthThresh)
+    {
+      if (dh < Solverptr->dhlin)
+      {
+        Sf = sqrt(Parptr->dx / Solverptr->dhlin) * (dh / Parptr->dx);
+        alpha = (pow(hflow, (5.0 / 3.0)) * Parptr->dx_sqrt) / (fn * sqrt(Solverptr->dhlin));
+      }
+      else alpha = pow(hflow, (5.0 / 3.0)) / (2. * fn * Sf);
+
+      Q = (pow(hflow, (5.0 / 3.0)) * Sf * Parptr->dy / fn);
+      if (Statesptr->adaptive_ts == ON)
+      {
+        *TSptr = getmin(*TSptr, (0.25 * Parptr->dy * Parptr->dy / alpha));
+        // MT: added to record Tstep
+        Arrptr->TRecy[pTQ] = *TSptr;
+      }
+      else
+      {
+        // flow limiter
+        Qlim = Solverptr->Qlimfact * Parptr->dA * fabs(dh) / (8 * Solverptr->Tstep);
+        if (fabs(Q) > Qlim)
+        {
+          if (Q > 0) Q = Qlim;
+          if (Q < 0) Q = -Qlim;
+          // MT added to record Qlim
+          Arrptr->LimQy[pTQ] = Q;
+        }
+      }
+    }
+    else Q = 0.0;
+
+  }
+  else if (z0 + h0<z1 + h1 && h1>Solverptr->DepthThresh)
+  {
+    dh = z1 + h1 - z0 - h0;
+    Sf = sqrt(dh / Parptr->dx);
+    hflow = getmax(z0 + h0, z1 + h1) - getmax(z0, z1);
+    hflow = getmax(hflow, 0);
+    hflow = getmin(hflow, Solverptr->MaxHflow);
+    // added to record Hflow
+    // Arrptr->Hflowy[pTQ] = hflow;
+
+    if (MaskTest(Arrptr->ChanMask[p0], Arrptr->ChanMask[p1]) && hflow > Solverptr->DepthThresh)
+    {
+      if (dh < Solverptr->dhlin)
+      {
+        Sf = sqrt(Parptr->dx / Solverptr->dhlin) * (dh / Parptr->dx);
+        alpha = (pow(hflow, (5.0 / 3.0)) * Parptr->dx_sqrt) / (fn * sqrt(Solverptr->dhlin));
+      }
+      else alpha = pow(hflow, (5.0 / 3.0)) / (2. * fn * Sf);
+
+      Q = (-pow(hflow, (5.0 / 3.0)) * Sf * Parptr->dy / fn);
+      if (Statesptr->adaptive_ts == ON)
+      {
+        *TSptr = getmin(*TSptr, (0.25 * Parptr->dy * Parptr->dy / alpha));
+        // MT: added to record Tstep
+        Arrptr->TRecy[pTQ] = *TSptr;
+      }
+      else
+      {
+        // flow limiter
+        Qlim = Solverptr->Qlimfact * Parptr->dA * fabs(dh) / (8 * Solverptr->Tstep);
+        if (fabs(Q) > Qlim)
+        {
+          if (Q > 0) Q = Qlim;
+          if (Q < 0) Q = -Qlim;
+          // MT added to record Qlim
+          Arrptr->LimQy[pTQ] = Q;
+        }
+      }
+    }
+    else Q = 0.0;
+  }
+  else Q = 0.0;
+  // option to save V's
+  if (Statesptr->voutput == ON)
+  {
+    if (Q != 0)
+    {
+      Arrptr->Vy[pTQ] = Q / Parptr->dx / hflow;
+      Arrptr->maxVy[pTQ] = getmax(Arrptr->maxVy[pTQ], fabs(Arrptr->Vy[pTQ]));
+    }
+    else Arrptr->Vy[pTQ] = 0.0;
+  }
+  return(Q);
+}
+
 //-----------------------------------------------------------------------------------
 // CALCULATE FLOODPLAIN (ie NON WIER) FLOW BETWEEN A POINT AND ITS W NEIGHBOUR
 double CalcFPQx(int i,int j,States *Statesptr,Pars *Parptr,Solver *Solverptr,Arrays *Arrptr, double * TSptr)

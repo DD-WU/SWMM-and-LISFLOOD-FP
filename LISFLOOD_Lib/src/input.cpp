@@ -1284,6 +1284,64 @@ void LoadDEM(Fnames *Fnameptr,States *Statesptr,Pars *Parptr,Arrays *Arrptr,int 
 
   return;
 }
+void LoadDSM(Fnames* Fnameptr, States* Statesptr, Pars* Parptr, Arrays* Arrptr, int* verbose)
+{
+    FILE* fp;
+    char dum[800];
+    double no_data_value = -9999;
+    int i, j;
+
+    fp = fopen(Fnameptr->DSMname, "rb");
+    if (fp == NULL) { fprintf(stderr, "No DSM file found. Aborting.\n"); exit(0); }
+
+    if (*verbose == ON) printf("\nLoading DSM:\t%s\n", Fnameptr->DSMname);
+
+    fscanf(fp, "%s %i", dum, &Parptr->xsz);
+    fscanf(fp, "%s %i", dum, &Parptr->ysz);
+    fscanf(fp, "%s %lf", dum, &Parptr->blx);
+    fscanf(fp, "%s %lf", dum, &Parptr->bly);
+    fscanf(fp, "%s %lf", dum, &Parptr->dx);
+    fscanf(fp, "%s %lf", dum, &no_data_value);
+    Arrptr->DSM = new double[Parptr->xsz * Parptr->ysz];
+    for (j = 0; j < Parptr->ysz; j++)
+      for (i = 0; i < Parptr->xsz; i++)
+    {
+      fscanf(fp, "%lf", Arrptr->DSM + i + j * Parptr->xsz);
+      if ((int)Arrptr->DSM[i + j * Parptr->xsz] == no_data_value) Arrptr->DSM[i + j * Parptr->xsz] = 1e10;
+    }
+    fclose(fp);
+
+    if (*verbose == ON) printf("Done.\n\n");
+}
+void LoadARF(Fnames* Fnameptr, States* Statesptr, Pars* Parptr, Arrays* Arrptr, int* verbose)
+{
+  FILE* fp;
+  char dum[800];
+  double no_data_value = -9999;
+  int i, j;
+
+  fp = fopen(Fnameptr->ARFname, "rb");
+  if (fp == NULL) { fprintf(stderr, "No ARF file found. Aborting.\n"); exit(0); }
+
+  if (*verbose == ON) printf("\nLoading ARF:\t%s\n", Fnameptr->ARFname);
+
+  fscanf(fp, "%s %i", dum, &Parptr->xsz);
+  fscanf(fp, "%s %i", dum, &Parptr->ysz);
+  fscanf(fp, "%s %lf", dum, &Parptr->blx);
+  fscanf(fp, "%s %lf", dum, &Parptr->bly);
+  fscanf(fp, "%s %lf", dum, &Parptr->dx);
+  fscanf(fp, "%s %lf", dum, &no_data_value);
+  Arrptr->ARF = new double[Parptr->xsz * Parptr->ysz];
+  for (j = 0; j < Parptr->ysz; j++)
+    for (i = 0; i < Parptr->xsz; i++)
+    {
+      fscanf(fp, "%lf", Arrptr->ARF + i + j * Parptr->xsz);
+      if ((int)Arrptr->ARF[i + j * Parptr->xsz] == no_data_value) Arrptr->ARF[i + j * Parptr->xsz] = 1e10;
+    }
+  fclose(fp);
+
+  if (*verbose == ON) printf("Done.\n\n");
+}
 //-----------------------------------------------------------------------------------
 // LOADS FILE GIVING IDENTIFIERS FOR EACH BOUNDARY CELL FROM .bci FILE
 // (e.g. HFIX, QVAR etc)
