@@ -1,0 +1,19 @@
+DEMfile		rainmodel.asc
+resroot		rainmodelgai
+dirroot		rainmodelgai
+sim_time	300.0
+initial_tstep	10
+massint		3600.0
+saveint		3600.0
+rainfall	rainmodel.rain
+bcifile rainmodel.bci
+bdyfile rainmodel.bdy
+elevoff
+adaptoff
+#acceleration
+theta		1
+#Roe
+
+qoutput
+voutput
+

@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\climate.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\controls.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\culvert.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\datetime.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dwflow.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dynwave.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\error.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\exfil.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\findroot.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\flowrout.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\forcmain.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gage.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gwater.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hash.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hotstart.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\iface.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\infil.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\inflow.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\inputrpt.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\keywords.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\kinwave.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\landuse.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lid.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lidproc.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\link.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\massbal.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mathexpr.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mempool.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\node.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\odesolve.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\output.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\project.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\qualrout.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rain.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rdii.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\report.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\roadway.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\routing.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\runoff.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shape.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\snow.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stats.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\statsrpt.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\subcatch.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\surfqual.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swmm5.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\table.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toposort.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transect.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\treatmnt.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xsect.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\couple.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib_bmi.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\consts.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\datetime.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\enums.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\error.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exfil.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\findroot.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\funcs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\globals.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hash.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\infil.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\keywords.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lid.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\macros.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mathexpr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mempool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\odesolve.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swmm5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\text.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bmi_swmm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Roadmap.txt" />
+    <None Include="cpp.hint" />
+  </ItemGroup>
+</Project>
