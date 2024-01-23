@@ -1,0 +1,26 @@
+﻿  model_interaction_hub.cpp
+F:\SWMM_lisflood0622\LISFLOOD_Lib\src\bmi_lisflood.h(12,1): warning C4005: “BMI_API”: 宏重定义
+F:\SWMM_lisflood0622\SWMM_Lib\src\bmi_swmm.h(12): message : 参见“BMI_API”的前一个定义
+F:\SWMM_LISFLOOD0622\Project1\space.h(65,13): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=int
+          ]
+F:\SWMM_LISFLOOD0622\Project1\space.h(66,13): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=int
+          ]
+F:\SWMM_LISFLOOD0622\Project1\space.h(72,21): warning C4018: “<”: 有符号/无符号不匹配
+F:\SWMM_LISFLOOD0622\Project1\space.h(75,15): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=int
+          ]
+F:\SWMM_LISFLOOD0622\Project1\space.h(76,15): warning C4244: “=”: 从“double”转换到“T”，可能丢失数据
+          with
+          [
+              T=int
+          ]
+F:\SWMM_LISFLOOD0622\Project1\model_interaction_hub.cpp(17,12): warning C4101: “k”: 未引用的局部变量
+  Project1.vcxproj -> F:\SWMM_LISFLOOD0622\Debug\Project1.exe

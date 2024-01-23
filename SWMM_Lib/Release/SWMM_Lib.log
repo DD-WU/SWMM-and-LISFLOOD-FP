@@ -1,0 +1,79 @@
+﻿  climate.c
+  controls.c
+  couple.c
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\couple.c(31,40): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\couple.c(32,41): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\couple.c(20,14): warning C4101: “yIndex”: 未引用的局部变量
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\couple.c(20,6): warning C4101: “xIndex”: 未引用的局部变量
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\couple.c(46,14): warning C4101: “yIndex”: 未引用的局部变量
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\couple.c(46,6): warning C4101: “xIndex”: 未引用的局部变量
+  culvert.c
+  datetime.c
+  dwflow.c
+  dynwave.c
+  error.c
+  exfil.c
+  findroot.c
+  flowrout.c
+  forcmain.c
+  gage.c
+  gwater.c
+  hash.c
+  hotstart.c
+  iface.c
+  infil.c
+  inflow.c
+  input.c
+  正在编译...
+  inputrpt.c
+  keywords.c
+  kinwave.c
+  landuse.c
+  lid.c
+  lidproc.c
+  link.c
+  main.c
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\main.c(18,6): warning C4007: “main”: 必须是“__cdecl”
+  massbal.c
+  mathexpr.c
+  mempool.c
+  node.c
+  odesolve.c
+  output.c
+  project.c
+  qualrout.c
+  rain.c
+  rdii.c
+  report.c
+  roadway.c
+  正在编译...
+  routing.c
+  runoff.c
+  shape.c
+  snow.c
+  stats.c
+  statsrpt.c
+  subcatch.c
+  surfqual.c
+  swmm5.c
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\swmm5.c(251,24): warning C4090: “函数”: 不同的“const”限定符
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\swmm5.c(251,28): warning C4090: “函数”: 不同的“const”限定符
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\swmm5.c(251,32): warning C4090: “函数”: 不同的“const”限定符
+  table.c
+  toposort.c
+  transect.c
+  treatmnt.c
+  xsect.c
+  lib_bmi.cpp
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\lib_bmi.cpp(331,18): warning C4101: “P”: 未引用的局部变量
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\lib_bmi.cpp(327,16): warning C4101: “p”: 未引用的局部变量
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\lib_bmi.cpp(328,16): warning C4101: “w”: 未引用的局部变量
+    正在创建库 F:\SWMM_lisflood\Project1-2-2\Release\SWMM_Lib.lib 和对象 F:\SWMM_lisflood\Project1-2-2\Release\SWMM_Lib.exp
+  正在生成代码
+  Previous IPDB not found, fall back to full compilation.
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\bmi_swmm.h(68): warning C4715: “par_swmm2label”: 不是所有的控件路径都返回值
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\bmi_swmm.h(55): warning C4715: “variable2label3”: 不是所有的控件路径都返回值
+F:\SWMM_lisflood\Project1-2-2\SWMM_Lib\src\lib_bmi.cpp(298): warning C4715: “hydrodynamics_of_pipe_network_module”: 不是所有的控件路径都返回值
+  All 1083 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  SWMM_Lib.vcxproj -> F:\SWMM_lisflood\Project1-2-2\Release\SWMM_Lib.dll
